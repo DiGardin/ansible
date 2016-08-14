@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  user: sshuser
+  sudo: true	 
+  gather_facts: false
+  
+
+  vars_prompt:
+    - name: pckg_name 
+      prompt: What package to Install
+  tasks:
+    - name : Installing {{pckg_name}}
+      action: apt name={{pckg_name}} state=installed
+      notify: Restart {{pckg_name}}
+
+  handlers:
+    - name: Restart {{pckg_name}}
+      action: service name={{pckg_name}} state=restarted
+

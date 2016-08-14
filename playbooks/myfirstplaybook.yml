@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Gather facts
+      setup:
+      remote_user: sshuser

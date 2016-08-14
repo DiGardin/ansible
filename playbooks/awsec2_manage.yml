@@ -1,0 +1,17 @@
+--- # start Stop Terminate Ec2 Instances
+- hosts : localhost
+  become: yes
+  connection: local
+  remote_user: zraja
+  gather_facts: no
+  vars_files:
+  - /home/zraja/slalomcreds.yml
+  tasks:
+  - name: Manage the state of an instance
+    ec2:
+      aws_access_key: "{{ aws_key }}"
+      aws_secret_key: "{{ aws_id }}"
+      region: us-east-1
+      instance_ids: i-5cc6bdef
+      state: stopped
+

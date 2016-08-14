@@ -1,0 +1,16 @@
+#---
+#- hosts: localhost
+#  tasks:
+#	- name: Install bind
+#		 apt: pkgn=bind9 state= installed update_cache=true
+
+
+
+---
+- hosts: localhost
+  user: sshuser
+  sudo: true
+
+  tasks:
+    - name: Installs Bind
+      apt: pkg=bind9 state=installed update_cache=true

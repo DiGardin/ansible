@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  user: sshuser
+  sudo: true	 
+  gather_facts: false
+  
+  tasks:
+    - name : Install Apache
+      action: apt name=apache2 state=installed
+      notify: Restart apache2
+
+  handlers:
+    - name: Restart apache2
+      action: service name=apache2 state=restarted
+
