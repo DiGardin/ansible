@@ -1,5 +1,5 @@
 --- # AwS Ec2 Instance Communication Shell Command Example
-- hosts: ww-dev-aws
+- hosts: slalom
   remote_user: ec2-user
   become_method: sudo
   gather_facts: yes

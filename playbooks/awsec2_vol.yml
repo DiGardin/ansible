@@ -2,19 +2,21 @@
 - hosts : localhost
   connection: local
   remote_user: zraja
-  gather_facts: no
   become: yes
+  gather_facts: no
   vars_files:
   - /home/zraja/slalomcreds.yml
   tasks:
     - name: List Running Instances
-      ec2_remote_facts:
+      ec2_vol:
         aws_access_key: "{{ aws_key }}"
         aws_secret_key: "{{ aws_id }}"
         region: us-east-1
-        filters:
-          vpc-id: vpc-87eea7e2
-          instance-type: t2.micro 
-      register: remote_facts
+        instance: i-5cc6bdef
+        state: list
+      register: volume_result
 # show all known facts for this host
-    - debug: var=[remote_facts]
+    - debug: var=[volume_result]
+# just show the instance-id
+#    - debug: msg="{{ hostvars[inventory_hostname]['ansible_ec2_instance-id'] }}"
+#    - debug: msg= {{ volume_result }}

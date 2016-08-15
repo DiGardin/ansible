@@ -1,5 +1,5 @@
 --- # Gather EC2 facts
-  - hosts: ww-dev-aws
+  - hosts: slalom
     remote_user: ec2-user
     become: yes
     connection: ssh

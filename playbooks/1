@@ -12,9 +12,5 @@
         aws_access_key: "{{ aws_key }}"
         aws_secret_key: "{{ aws_id }}"
         region: us-east-1
-        filters:
-          vpc-id: vpc-87eea7e2
-          instance-type: t2.micro 
       register: remote_facts
-# show all known facts for this host
-    - debug: var=[remote_facts]
+    - debug: msg= {{ remote_facts }}
