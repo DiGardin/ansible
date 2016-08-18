@@ -1,0 +1,43 @@
+--- # Launch new Ec2 Instance(s)
+- hosts : localhost
+  become: yes
+  connection: local
+  remote_user: "{{user}}"
+  gather_facts: no
+  vars_files:
+  - /home/zraja/{{creds}}.yml
+  - /home/zraja/{{params}}.yml
+# Launch instances with the following parameters.  Register the output.  
+  tasks:
+    - name: Manage the state of an instance
+      ec2:
+         aws_access_key: "{{ aws_key }}"
+         aws_secret_key: "{{ aws_id }}"
+         region: "{{ region }}"
+         image: "{{ ami_id }}"
+         key_name: "{{ keypair }}"
+         instance_type: "{{ instance_type }}"
+         count: "{{ count }}"
+         group_id: "{{ security_group }}"
+         vpc_subnet_id: "{{ subnet_id }}"
+         assign_public_ip: no
+         instance_tags:
+            Name: "{{ server_name }}"
+            Environment: "{{ env }}"
+      register: newinstance
+
+    - name: Wait for the port 3389 to be listening
+      wait_for: host= {{ newinstance.instances[i].id }} port=3389 delay=5
+
+    - name: Allocating elastic IP to instance
+      ec2_eip:
+         aws_access_key: "{{ aws_key }}"
+         aws_secret_key: "{{ aws_id }}"
+         in_vpc: yes
+         reuse_existing_ip_allowed: yes
+         state: present
+         region: us-east-1
+         instance_id: "{{ newinstance.instances[0].id }}"
+      register: instance_eip
+    - debug: var=instance_eip.public_ip
+

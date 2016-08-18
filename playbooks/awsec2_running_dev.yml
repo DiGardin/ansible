@@ -3,9 +3,9 @@
   connection: local
   remote_user: zraja
   gather_facts: no
-  become: yes
+  become: zraja
   vars_files:
-  - /home/zraja/slalomcreds.yml
+  - /home/zraja/{{creds}}.yml
   tasks:
     - name: List Running Instances
       ec2_remote_facts:
@@ -13,8 +13,10 @@
         aws_secret_key: "{{ aws_id }}"
         region: us-east-1
         filters:
-          vpc-id: vpc-87eea7e2
-          instance-type: t2.micro 
+          #vpc-id: vpc-56dba433
+          instance-type: t2.micro
+          instance-state-name: running
+          #"tag:Name": "{{ instance_name }}"
       register: remote_facts
 # show all known facts for this host
     - debug: var=[remote_facts]
