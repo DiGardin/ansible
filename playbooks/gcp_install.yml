@@ -1,0 +1,17 @@
+---
+- hosts: terraform
+  user: zuhaibakhtar
+  #sudo: true
+  become_method: sudo  
+  vars_prompt:
+    - name: pckg_name 
+      prompt: What package to Install
+  tasks:
+    - name : Installing {{pckg_name}}
+      action: yum name={{pckg_name}} state=installed
+      notify: Restart {{pckg_name}}
+      when: ansible_distribution == 'CentOS' #or ansible_distribution == 'Ubuntu'
+  handlers:
+    - name: Restart {{pckg_name}}
+      action: service name={{pckg_name}} state=restarted
+

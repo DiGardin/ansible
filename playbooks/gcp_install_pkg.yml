@@ -1,0 +1,13 @@
+# Install 
+---
+- hosts: terraform
+  user: zuhaibakhtar
+  sudo: true
+  #become_method: sudo
+  tasks:
+    - name: Installs http-Debian
+      apt: pkg=apache2,nginx state=installed 
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    - name: Install working-CentOS
+      yum: pkg=httpd,nginx state=installed
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
