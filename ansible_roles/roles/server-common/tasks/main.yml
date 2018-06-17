@@ -1,0 +1,77 @@
+---
+- name: upgrade all packages
+  yum: name=* state=latest
+  when: ansible_os_family == "RedHat"
+
+- name: Install gcc
+  yum: name=gcc state=present
+  when: ansible_os_family == "RedHat"
+  tags:
+   - myserver
+   
+- name: Install python setup tools
+  yum: name=python-setuptools state=present
+  when: ansible_os_family == "RedHat"
+
+- name: Install pip
+  easy_install: name=pip state=present
+  when: ansible_os_family == "RedHat"
+
+- name: Install python development tools
+  yum: name=python-devel state=present
+  when: ansible_os_family == "RedHat"
+
+- name: Install ansible
+  pip: name=ansible state=present
+  when: ansible_os_family == "RedHat"
+
+- name: Install Git
+  yum: name=git state=present
+  when: ansible_os_family == "RedHat"
+##############################################   Debian   ###############################
+#- name: upgrade all packages
+#  apt: name=* state=latest
+#  when: ansible_os_family == "Debian"
+
+- name: Install gcc
+  apt: name=gcc state=present
+  when: ansible_os_family == "Debian"
+
+- name: Install python setup tools
+  apt: name=python-setuptools state=present
+  when: ansible_os_family == "Debian"
+
+- name: Install pip
+  easy_install: name=pip state=present
+  when: ansible_os_family == "Debian"
+
+- name: Install python development tools
+  apt: name=python-dev state=present
+  when: ansible_os_family == "Debian"
+
+- name: Install ansible
+  apt: name=ansible state=present
+  when: ansible_os_family == "Debian"
+
+- name: Install Git
+  apt: name=git state=present
+  when: ansible_os_family == "Debian"
+
+ 
+#- name: Check for reboot
+#  shell: if [ $(rpm -q kernel|tail -n 1) != kernel-$(uname -r) ]; then echo 'reboot'; else echo 'no'; fi
+#  ignore_errors: true
+#  register: reboot_hint
+
+#- name: Rebooting ...
+#  command: shutdown -r now "Reboot required for updated kernel"
+#  async: 0
+#  poll: 0
+#  become: false
+#  ignore_errors: true
+#  when: reboot_hint.stdout.find("reboot") != -1
+#  register: rebooting
+
+#- name: Wait for rebooted servers to come back
+#  local_action: wait_for host={{ ansible_ssh_host | default(inventory_hostname) }} state=started port=22 delay=30 timeout=300 connect_timeout=15
+#  when: rebooting|changed

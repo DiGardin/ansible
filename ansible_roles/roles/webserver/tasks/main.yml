@@ -1,0 +1,26 @@
+---
+- name: Install httpd Server(RedHat)
+  yum: name=httpd state=present
+  when: ansible_os_family== "RedHat"
+
+- name: Start HTTPD Service(RedHat)
+  service: name=httpd state=started enabled=yes
+  when: ansible_os_family== "RedHat"
+
+- name: Install apache Server(Debian)
+  apt: name=apache2 state=present
+  when: ansible_os_family== "Debian"
+
+- name: Start Apache Service (Debian)
+  service: name=apache2 enabled=yes state=started
+  when: ansible_os_family== "Debian"
+
+- file:
+    path: /var/www/html/ansible/
+    state: directory
+    mode: 0755
+
+- name: Copy Index file
+  template: src=index.j2 dest={{ doc_root }}/index.html
+  notify:
+  - Restart Webserver Service

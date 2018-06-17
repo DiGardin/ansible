@@ -1,0 +1,6 @@
+---
+ - hosts: dbservers:gcloudservers
+   become: yes
+   gather_facts: yes
+   roles:
+    - server-common

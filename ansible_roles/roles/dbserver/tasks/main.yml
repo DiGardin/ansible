@@ -1,0 +1,17 @@
+---
+
+- name: Instal MYSQL Server(RedHat)
+  yum: name=mysql-server state=present
+  when: ansible_os_family == "RedHat"
+
+- name: Instal MYSQL Server(Debian)
+  apt: name=mysql-server state=present
+  when: ansible_os_family == "Debian"
+
+- name: start MYSQL Server(RedHat)
+  service: name=mysqld state=started enabled=yes
+  when: ansible_os_family == "RedHat"
+
+- name: start MYSQL Server (Debian)
+  service: name=mysql-server state=started enabled=yes
+  when: ansible_os_family == "Debian"
